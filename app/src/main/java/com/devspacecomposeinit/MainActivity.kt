@@ -7,6 +7,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.provider.FontsContractCompat.Columns
 import com.devspacecomposeinit.ui.theme.ComposeInitTheme
 
 class MainActivity : ComponentActivity() {
@@ -45,43 +47,68 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val leonardo = Artist(
-                        name = "Leonardo da Vinci",
-                        lastSeenOnline = "3 minutes ago",
-                        image = R.drawable.ic_leonardo_da_vinci,
-                        art = R.drawable.ic_mona_lisa
+                    val marcos = Contact(
+                        name = "Marcos",
+                        phone = "(55) 21 965889957",
+                        icon = R.drawable.sample12
+                    )
+                    val nicole = Contact(
+                        name = "Nicole",
+                        phone = "(55) 21 985689043",
+                        icon = R.drawable.sample1
+                    )
+                    val melissa = Contact(
+                        name = "Melissa",
+                        phone = "(55) 21 967945876",
+                        icon = R.drawable.sample3
+                    )
+                    val rogerio = Contact(
+                        name = "Rogerio",
+                        phone = "(55) 21 9808957894",
+                        icon = R.drawable.sample2
+                    )
+                    val vivian = Contact(
+                        name = "Vivian",
+                        phone = "(55) 21 967438905",
+                        icon = R.drawable.sample6
+                    )
+                    val roberta = Contact(
+                        name = "Roberta",
+                        phone = "(55) 21 968547890",
+                        icon = R.drawable.sample16
+                    )
+                    val carlos = Contact(
+                        name = "Carlos",
+                        phone = "(55) 21 978459607",
+                        icon = R.drawable.sample8
+                    )
+                    val shirley = Contact(
+                        name = "Shirley",
+                        phone = "(55) 21 968945635",
+                        icon = R.drawable.sample7
+                    )
+                    val manuel = Contact(
+                        name = "Manuel",
+                        phone = "(55) 21 973690469",
+                        icon = R.drawable.sample10
                     )
 
-                    val picasso = Artist(
-                        name = "Pablo Picasso",
-                        lastSeenOnline = "5 minutes ago",
-                        image = R.drawable.ic_pablo_picasso,
-                        art = R.drawable.ic_beijo
+                    val contacts = listOf(
+                        marcos,
+                        nicole,
+                        melissa,
+                        rogerio,
+                        vivian,
+                        roberta,
+                        carlos,
+                        shirley,
+                        manuel
                     )
-
-                    val salvador = Artist(
-                        name = "Salvador Dali",
-                        lastSeenOnline = "7 minutes ago",
-                        image = R.drawable.ic_salvador_dali,
-                        art = R.drawable.ic_persistence_of_memory
-                    )
-
-                    val vanGogh = Artist(
-                        name = "Vincent Van Gogh",
-                        lastSeenOnline = "9 minutes ago",
-                        image = R.drawable.ic_vincent_van_gogh,
-                        art = R.drawable.ic_starry_night
-                    )
-
-                    val artists = listOf(vanGogh, salvador, picasso, leonardo)
 
                     LazyColumn {
-                        items(artists) { artist ->
-                            ArtistCard(
-                                artist = artist,
-                                onClick = {
-                                    println("Marcos")
-                                })
+
+                        items(contacts) { contact ->
+                            ContactCard(contact = contact)
                         }
                     }
                 }
@@ -90,75 +117,86 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun ArtistCard(
-        artist: Artist,
-        onClick:() -> Unit
-    ) {
+    fun ContactTitle() {
+        Column {
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    modifier = Modifier.padding(end = 180.dp),
+                    fontSize = 40.sp,
+                    text = "Contact",
+                    fontWeight = FontWeight.Bold
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.ic_list),
+                    contentDescription = "List Icon"
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.ic_grid),
+                    contentDescription = "Grid Icon"
+                )
+            }
+        }
+
+
+    }
+
+    @Composable
+    fun ContactCard(contact: Contact) {
         Column(
-            modifier = Modifier.padding(8.dp)
-                .clickable(onClick = onClick),
+            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
         ) {
+            Spacer(modifier = Modifier.size(16.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
-                    modifier = Modifier
-                        .size(60.dp)
-                        .clip(CircleShape),
-                    contentScale = ContentScale.FillWidth,
-                    painter = painterResource(id = artist.image),
-                    contentDescription = "Artist Image",
-
-                    )
-                Spacer(modifier = Modifier.size(16.dp))
+                    modifier = Modifier.size(80.dp),
+                    painter = painterResource(id = contact.icon),
+                    contentDescription = "Contact Image"
+                )
+                Spacer(modifier = Modifier.size(8.dp))
                 Column {
                     Text(
-                        text = artist.name,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        text = contact.name,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.SemiBold
                     )
                     Text(
-                        text = artist.lastSeenOnline,
-                        color = Color.Gray
+                        text = contact.phone,
+                        color = Color.DarkGray,
+                        fontSize = 24.sp,
                     )
                 }
-            }
-            Card(
-                modifier = Modifier
-                    .padding(8.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-            ) {
-                Image(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    contentScale = ContentScale.Crop,
-                    painter = painterResource(id = artist.art), contentDescription = "Art Image"
-                )
             }
         }
     }
 
-    data class Artist(
+    @Composable
+    fun ContactInfo(contact: Contact) {
+        Column {
+            ContactTitle()
+            Spacer(modifier = Modifier.height(8.dp))
+            ContactCard(contact = contact)
+        }
+    }
+
+    data class Contact(
         val name: String,
-        val lastSeenOnline: String,
-        @DrawableRes val image: Int,
-        @DrawableRes val art: Int,
+        val phone: String,
+        @DrawableRes val icon: Int
     )
 
     @Preview(showBackground = true)
     @Composable
-    fun ArtistCardPreview() {
+    fun ContactCardPreview() {
 
         ComposeInitTheme {
-            val artist = Artist(
-                name = "Leonardo da Vinci",
-                lastSeenOnline = "3 minutes ago",
-                image = R.drawable.ic_leonardo_da_vinci,
-                art = R.drawable.ic_mona_lisa
+            val contact = Contact(
+                name = "Marcos",
+                phone = "(55) 21 965889957",
+                icon = R.drawable.sample12
             )
-            ArtistCard(artist = artist,
-                onClick = {
-
-                })
+            ContactCard(contact = contact)
+            ContactTitle()
         }
     }
 }
